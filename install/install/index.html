@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Shadowrocket 一键导入</title>
+
+<style>
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: #f5f7fa;
+    margin: 0;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.card {
+    max-width: 520px;
+    margin: auto;
+    background: white;
+    padding: 32px 22px;
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(0,0,0,.08);
+}
+
+h1 {
+    font-size: 26px;
+}
+
+.desc {
+    color: #666;
+    line-height: 1.7;
+}
+
+.button {
+    display: block;
+    margin: 25px auto 15px;
+    padding: 16px 20px;
+    background: #1677ff;
+    color: white;
+    text-decoration: none;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.raw {
+    display: block;
+    margin-top: 15px;
+    color: #1677ff;
+    text-decoration: none;
+}
+
+.tip {
+    margin-top: 25px;
+    font-size: 13px;
+    color: #999;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+<h1 id="title">Shadowrocket 配置</h1>
+
+<p class="desc">
+正在准备配置。<br>
+如果没有自动打开 Shadowrocket，请点击下面按钮。
+</p>
+
+<a id="openButton" class="button">
+🚀 打开 Shadowrocket
+</a>
+
+<a id="rawButton" class="raw">
+备用：打开 Raw 配置
+</a>
+
+<p class="tip">
+本配置不包含节点。请先在 Shadowrocket 中添加自己的代理节点。
+</p>
+
+</div>
+
+<script>
+
+const configs = {
+
+    universal: {
+        name: "🌐 全国通用",
+        file: "Strict-DNS-China-Universal.conf"
+    },
+
+    south: {
+        name: "🌴 华南",
+        file: "Strict-DNS-China-South.conf"
+    },
+
+    east: {
+        name: "🌊 华东",
+        file: "Strict-DNS-China-East.conf"
+    },
+
+    north: {
+        name: "🏯 华北",
+        file: "Strict-DNS-China-North.conf"
+    },
+
+    central: {
+        name: "🌾 华中",
+        file: "Strict-DNS-China-Central.conf"
+    },
+
+    southwest: {
+        name: "🐼 西南",
+        file: "Strict-DNS-China-Southwest.conf"
+    },
+
+    northwest: {
+        name: "🏔️ 西北",
+        file: "Strict-DNS-China-Northwest.conf"
+    },
+
+    northeast: {
+        name: "❄️ 东北",
+        file: "Strict-DNS-China-Northeast.conf"
+    }
+
+};
+
+
+const params = new URLSearchParams(window.location.search);
+
+let region = params.get("region") || "universal";
+
+if (!configs[region]) {
+    region = "universal";
+}
+
+
+const config = configs[region];
+
+
+const rawURL =
+"https://raw.githubusercontent.com/PIGGY072366/Shadowrocket-China-Strict-DNS/main/configs/"
++ config.file;
+
+
+const shadowrocketURL =
+"shadowrocket://config/add/" + rawURL;
+
+
+document.getElementById("title").innerText =
+config.name + " · Shadowrocket";
+
+
+const openButton =
+document.getElementById("openButton");
+
+openButton.href = shadowrocketURL;
+
+
+const rawButton =
+document.getElementById("rawButton");
+
+rawButton.href = rawURL;
+
+
+/*
+自动尝试唤起 Shadowrocket
+如果浏览器拦截，用户仍然可以点击按钮
+*/
+
+setTimeout(() => {
+
+    window.location.href = shadowrocketURL;
+
+}, 500);
+
+</script>
+
+</body>
+</html>
